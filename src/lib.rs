@@ -19,6 +19,7 @@ use syn::{parenthesized, FnArg};
 struct SingleLine {
     attrs: Vec<Attribute>,
     vis: Visibility,
+    #[allow(unused)]
     fn_token: Option<Token![fn]>,
     name: Ident,
     args: Vec<FnArg>,
