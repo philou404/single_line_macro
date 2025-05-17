@@ -53,3 +53,5 @@ impl Foo {
 single_line![pub answer -> i32 => 42];
 single_line![greet(name: &str) -> String => format!("Hello, {}", name)];
 ```
+
+*more examples in the [test folder](https://github.com/philou404/single_line_macro/blob/master/tests/single_line_tests.rs)*
