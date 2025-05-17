@@ -49,7 +49,10 @@ fn test_point_functions() {
     let p1 = Point::new(1, 2);
     let p2 = Point::new(-3, 5);
     assert_eq!(origin(), Point { x: 0, y: 0 });
-    assert_eq!(distance(&p1, &p2), (1i32 - -3i32).abs() + (2i32 - 5i32).abs());
+    assert_eq!(
+        distance(&p1, &p2),
+        (1i32 - -3i32).abs() + (2i32 - 5i32).abs()
+    );
     assert_eq!(is_same(&p1, &p1), true);
     assert_eq!(is_same(&p1, &p2), false);
 }

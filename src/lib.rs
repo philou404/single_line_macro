@@ -7,13 +7,11 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{
-    parse_macro_input, Attribute, Expr, Ident, Result, Token, Type, Visibility,
-};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::token::{Comma, Paren};
-use syn::{parenthesized, FnArg};
+use syn::{Attribute, Expr, Ident, Result, Token, Type, Visibility, parse_macro_input};
+use syn::{FnArg, parenthesized};
 
 /// Parses a single `single_line![…]` invocation.
 struct SingleLine {
@@ -50,9 +48,8 @@ impl Parse for SingleLine {
         if input.peek(Paren) {
             let content;
             parenthesized!(content in input);
-            let punct: Punctuated<FnArg, Comma> =
-                content.parse_terminated(FnArg::parse, Comma)?;
-            args.extend(punct.into_iter());
+            let punct: Punctuated<FnArg, Comma> = content.parse_terminated(FnArg::parse, Comma)?;
+            args.extend(punct);
         }
 
         // 6. Return arrow and type
