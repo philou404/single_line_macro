@@ -24,11 +24,11 @@ impl Point {
     sl![pub fn scale(&self, f: i32) -> Self => Self { x: self.x * f, y: self.y * f }];
 
     /// Resets the point to the origin.
-    sl![pub fn reset(&mut self) -> () => { self.x = 0; self.y = 0 }];
+    sl![pub fn reset(&mut self) => { self.x = 0; self.y = 0 }];
 }
 
 // Free functions
-sl![pub fn origin() -> Point => Point { x: 0, y: 0 }];
+sl![pub origin -> Point => Point { x: 0, y: 0 }];
 sl![distance(a: &Point, b: &Point) -> i32 => (a.x - b.x).abs() + (a.y - b.y).abs()];
 sl![is_same(a: &Point, b: &Point) -> bool => a == b];
 

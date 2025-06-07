@@ -7,21 +7,19 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 use quote::quote;
+use syn::parenthesized;
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::token::{Comma, Paren};
-use syn::{Attribute, Expr, Ident, Result, Token, Type, Visibility, parse_macro_input};
-use syn::{FnArg, parenthesized};
+use syn::{parse_macro_input, Attribute, Expr, FnArg, Ident, Result, Token, Type, Visibility};
 
-/// Parses a single `single_line![…]` invocation.
 struct SingleLine {
     attrs: Vec<Attribute>,
     vis: Visibility,
-    #[allow(unused)]
-    fn_token: Option<Token![fn]>,
+    _fn_token: Option<Token![fn]>,
     name: Ident,
     args: Vec<FnArg>,
-    ret_ty: Type,
+    ret_ty: Option<Type>,
     expr: Expr,
 }
 
@@ -52,18 +50,22 @@ impl Parse for SingleLine {
             args.extend(punct);
         }
 
-        // 6. Return arrow and type
-        input.parse::<Token![->]>()?;
-        let ret_ty: Type = input.parse()?;
+        // 6. Retour facultatif : soit `-> Type`, soit pas
+        let ret_ty = if input.peek(Token![->]) {
+            input.parse::<Token![->]>()?;
+            Some(input.parse()?)
+        } else {
+            None
+        };
 
-        // 7. `=>` and the expression
+        // 7. Flèche d’expression et expr
         input.parse::<Token![=>]>()?;
         let expr: Expr = input.parse()?;
 
         Ok(SingleLine {
             attrs,
             vis,
-            fn_token,
+            _fn_token: fn_token,
             name,
             args,
             ret_ty,
@@ -79,9 +81,10 @@ pub fn single_line(item: TokenStream) -> TokenStream {
     let attrs = input.attrs;
     let vis = input.vis;
     let name = input.name;
-    let ret_ty = input.ret_ty;
     let expr = input.expr;
     let args = input.args;
+
+    let ret_ty = input.ret_ty.unwrap_or_else(|| syn::parse_quote! { () });
 
     // Detect if this is a method (has &self or &mut self)
     let is_method = args.iter().any(|arg| matches!(arg, FnArg::Receiver(_)));
@@ -102,7 +105,7 @@ pub fn single_line(item: TokenStream) -> TokenStream {
         quote! { #expr }
     };
 
-    // Reconstruct argument list or default to ()
+    // reconstruction de la liste d’arguments
     let args_quote = if !args.is_empty() {
         quote! { ( #(#args),* ) }
     } else {
