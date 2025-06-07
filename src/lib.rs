@@ -50,7 +50,7 @@ impl Parse for SingleLine {
             args.extend(punct);
         }
 
-        // 6. Retour facultatif : soit `-> Type`, soit pas
+        // 6. Optional return type: parse `-> ...` if present
         let ret_ty = if input.peek(Token![->]) {
             input.parse::<Token![->]>()?;
             Some(input.parse()?)
@@ -58,7 +58,7 @@ impl Parse for SingleLine {
             None
         };
 
-        // 7. Flèche d’expression et expr
+        // 7. Body expression: parse `=> ...`
         input.parse::<Token![=>]>()?;
         let expr: Expr = input.parse()?;
 
@@ -105,7 +105,7 @@ pub fn single_line(item: TokenStream) -> TokenStream {
         quote! { #expr }
     };
 
-    // reconstruction de la liste d’arguments
+    // build the function signature
     let args_quote = if !args.is_empty() {
         quote! { ( #(#args),* ) }
     } else {
