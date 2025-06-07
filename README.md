@@ -16,7 +16,7 @@ Add this to your crate’s `Cargo.toml`:
 
 ```toml
 [dependencies]
-single_line_macro = "0.1"
+single_line_macro = "0.2.0"
 ```
 
 And in your code:
