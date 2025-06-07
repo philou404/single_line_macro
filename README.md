@@ -36,17 +36,19 @@ use single_line_macro::single_line;
 struct Foo { x: i32 }
 
 impl Foo {
-    /// Creates a new `Foo` with the given `x`.
-    single_line![pub new(x: i32) -> Self => Self { x }];
+    single_line![/// Creates a new `Foo` with the given `x`.
+        pub new(x: i32) -> Self => Self { x }];
+    
+    single_line![/// Returns the current `x`.
+        pub fn get_x(&self) -> i32 => self.x];
 
-    /// Returns the current `x`.
-    single_line![pub fn get_x(&self) -> i32 => self.x];
+    
+    single_line![/// Multiplies `x` by `m`.
+        pub fn mult(&self, m: i32) -> i32 => self.x * m];
 
-    /// Multiplies `x` by `m`.
-    single_line![pub fn mult(&self, m: i32) -> i32 => self.x * m];
-
-    /// Resets `x` to zero.
-    single_line![pub fn reset(&mut self) -> () => { self.x = 0; }];
+    
+    single_line![/// Resets `x` to zero.
+        pub fn reset(&mut self) -> () => { self.x = 0; }];
 }
 
 // Free functions:

@@ -8,23 +8,23 @@ struct Point {
 }
 
 impl Point {
-    /// Creates a new `Point`.
-    sl![pub new(x: i32, y: i32) -> Self => Self { x, y }];
+    sl![/// Creates a new `Point`.
+        pub new(x: i32, y: i32) -> Self => Self { x, y }];
 
-    /// Returns the X coordinate.
-    sl![pub fn x(&self) -> i32 => x];
+    sl![/// Returns the X coordinate.
+        pub fn x(&self) -> i32 => x];
 
-    /// Returns the Y coordinate.
-    sl![pub fn y(&self) -> i32 => y];
+    sl![/// Returns the Y coordinate.
+        pub fn y(&self) -> i32 => y];
 
-    /// Computes the Manhattan distance from the origin.
-    sl![fn manhattan(&self) -> i32 => self.x.abs() + self.y.abs()];
+    sl![/// Computes the Manhattan distance from the origin.
+        fn manhattan(&self) -> i32 => self.x.abs() + self.y.abs()];
 
-    /// Scales the point by a factor.
-    sl![pub fn scale(&self, f: i32) -> Self => Self { x: self.x * f, y: self.y * f }];
+    sl![/// Scales the point by a factor.
+        pub fn scale(&self, f: i32) -> Self => Self { x: self.x * f, y: self.y * f }];
 
-    /// Resets the point to the origin.
-    sl![pub fn reset(&mut self) => { self.x = 0; self.y = 0 }];
+    sl![/// Resets the point to the origin.
+        pub fn reset(&mut self) => { self.x = 0; self.y = 0 }];
 }
 
 // Free functions
