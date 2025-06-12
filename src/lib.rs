@@ -17,6 +17,7 @@ struct SingleLine {
     attrs: Vec<Attribute>,
     vis: Visibility,
     _fn_token: Option<Token![fn]>,
+    async_token: Option<Token![async]>,
     name: Ident,
     args: Vec<FnArg>,
     ret_ty: Option<Type>,
@@ -33,6 +34,13 @@ impl Parse for SingleLine {
 
         // 3. Optional `fn` keyword
         let fn_token = if input.peek(Token![fn]) {
+            Some(input.parse()?)
+        } else {
+            None
+        };
+
+        // 3. Optional `async` keyword
+        let async_token = if input.peek(Token!(async)) {
             Some(input.parse()?)
         } else {
             None
@@ -66,6 +74,7 @@ impl Parse for SingleLine {
             attrs,
             vis,
             _fn_token: fn_token,
+            async_token,
             name,
             args,
             ret_ty,
@@ -83,6 +92,7 @@ pub fn single_line(item: TokenStream) -> TokenStream {
     let name = input.name;
     let expr = input.expr;
     let args = input.args;
+    let async_token = input.async_token;
 
     let ret_ty = input.ret_ty.unwrap_or_else(|| syn::parse_quote! { () });
 
@@ -114,7 +124,7 @@ pub fn single_line(item: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         #(#attrs)*
-        #vis fn #name #args_quote -> #ret_ty {
+        #vis #async_token fn #name #args_quote -> #ret_ty {
             #body
         }
     };

@@ -25,6 +25,8 @@ impl Point {
 
     sl![/// Resets the point to the origin.
         pub fn reset(&mut self) => { self.x = 0; self.y = 0 }];
+    
+    sl![pub async rdn() -> i32 => 20];
 }
 
 // Free functions
