@@ -7,7 +7,7 @@ description = "A macro to create methods and functions on a single line in a mor
 readme = "README.md"
 repository = "https://github.com/philou404/single_line_macro/"
 license = "MIT"
-keywords = ["macro", "single-line", "getter"]
+keywords = ["macro", "single-line", "getter", "async"]
 
 [dependencies]
 syn = { version = "2.0", features = ["full"] }
