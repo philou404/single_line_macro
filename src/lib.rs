@@ -32,12 +32,6 @@ impl Parse for SingleLine {
         // 2. Visibility (`pub`, `pub(crate)`, or nothing)
         let vis: Visibility = input.parse()?;
 
-        // 3. Optional `fn` keyword
-        let fn_token = if input.peek(Token![fn]) {
-            Some(input.parse()?)
-        } else {
-            None
-        };
 
         // 3. Optional `async` keyword
         let async_token = if input.peek(Token!(async)) {
@@ -45,11 +39,18 @@ impl Parse for SingleLine {
         } else {
             None
         };
-
-        // 4. Function name
+        
+        // 4. Optional `fn` keyword
+        let fn_token = if input.peek(Token![fn]) {
+            Some(input.parse()?)
+        } else {
+            None
+        };
+        
+        // 5. Function name
         let name: Ident = input.parse()?;
 
-        // 5. Argument list: parse `( ... )` if present
+        // 6. Argument list: parse `( ... )` if present
         let mut args = Vec::new();
         if input.peek(Paren) {
             let content;
@@ -58,7 +59,7 @@ impl Parse for SingleLine {
             args.extend(punct);
         }
 
-        // 6. Optional return type: parse `-> ...` if present
+        // 7. Optional return type: parse `-> ...` if present
         let ret_ty = if input.peek(Token![->]) {
             input.parse::<Token![->]>()?;
             Some(input.parse()?)
@@ -66,7 +67,7 @@ impl Parse for SingleLine {
             None
         };
 
-        // 7. Body expression: parse `=> ...`
+        // 8. Body expression: parse `=> ...`
         input.parse::<Token![=>]>()?;
         let expr: Expr = input.parse()?;
 
