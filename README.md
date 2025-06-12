@@ -9,14 +9,14 @@ A small procedural macro that lets you define one-line functions and methods usi
 - Support for doc comments (`///`) — they will appear in generated documentation.
 - Automatically expands a single-field expression `x` into `self.x` within methods.
 - Zero-dependency (besides `syn` and `quote`).
-
+- Support async keyword
 ## Installation
 
 Add this to your crate’s `Cargo.toml`:
 
 ```toml
 [dependencies]
-single_line_macro = "0.2.1"
+single_line_macro = "0.2.x"
 ```
 
 And in your code:
@@ -49,6 +49,9 @@ impl Foo {
     
     single_line![/// Resets `x` to zero.
         pub fn reset(&mut self) -> () => { self.x = 0; }];
+    
+    single_line![/// Multiplies async
+        pub async mult_async(&self, m: i32) -> i32 => self.x * m];
 }
 
 // Free functions:
